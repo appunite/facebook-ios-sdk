@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Facebook
+ * Copyright 2010-present Facebook.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,13 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication 
          annotation:(id)annotation {
-    return [FBSession.activeSession handleOpenURL:url]; 
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:sourceApplication];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FBAppEvents activateApp];
+    [FBAppCall handleDidBecomeActive];
 }
 
 // FBSample logic
@@ -51,6 +57,5 @@
     // Close the session token before quitting
     [FBSession.activeSession close];
 }
-
 
 @end
